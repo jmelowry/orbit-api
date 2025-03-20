@@ -66,7 +66,6 @@ paths:
                   log:
                     type: string
                     example: "New celestial object detected in Jamie's system."
-
     get:
       summary: Retrieve all orbiters for a user
       parameters:
