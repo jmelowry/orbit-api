@@ -1,0 +1,143 @@
+openapi: 3.0.0
+info:
+  title: Orbit Tracking API
+  description: API for managing orbiters in a personal task solar system
+  version: 1.0.0
+servers:
+  - url: https://api.orbitersystem.com
+paths:
+  /{user}/api/orbiters:
+    post:
+      summary: Add a new orbiter to the user's system
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: The user’s name or unique identifier
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [orbiter, category, scope, priority]
+              properties:
+                orbiter:
+                  type: string
+                  example: "Work Report"
+                category:
+                  type: string
+                  example: "work"
+                scope:
+                  type: integer
+                  example: 10
+                priority:
+                  type: integer
+                  example: 2
+      responses:
+        "200":
+          description: Orbiter added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  starmap:
+                    type: string
+                    example: "/jamie/api/starmap"
+                  orbital_data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        orbiter:
+                          type: string
+                        angle:
+                          type: integer
+                        distance:
+                          type: integer
+                        size:
+                          type: integer
+                  log:
+                    type: string
+                    example: "New celestial object detected in Jamie's system."
+
+  /{user}/api/starmap:
+    get:
+      summary: Retrieve the latest orbit visualization for a user
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Returns an SVG visualization of the orbit
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+                format: binary
+
+  /{user}/api/orbiters:
+    get:
+      summary: Retrieve all orbiters for a user
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of all orbiters in the user's system
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    orbiter:
+                      type: string
+                    category:
+                      type: string
+                    scope:
+                      type: integer
+                    priority:
+                      type: integer
+                    angle:
+                      type: integer
+                    distance:
+                      type: integer
+                    size:
+                      type: integer
+
+  /{user}/api/orbiters/{orbiter_id}:
+    delete:
+      summary: Remove an orbiter from a user's system
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: orbiter_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Orbiter removed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Orbiter removed successfully."
