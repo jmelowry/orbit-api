@@ -1,10 +1,3 @@
-openapi: 3.0.0
-info:
-  title: Orbit Tracking API
-  description: API for managing orbiters in a personal task solar system
-  version: 1.0.0
-servers:
-  - url: https://api.orbitersystem.com
 paths:
   /{user}/api/orbiters:
     post:
@@ -64,26 +57,7 @@ paths:
                     type: string
                     example: "New celestial object detected in Jamie's system."
 
-  /{user}/api/starmap:
-    get:
-      summary: Retrieve the latest orbit visualization for a user
-      parameters:
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Returns an SVG visualization of the orbit
-          content:
-            image/svg+xml:
-              schema:
-                type: string
-                format: binary
-
-  /{user}/api/orbiters:
-    get:
+    get:  # Retrieve all orbiters
       summary: Retrieve all orbiters for a user
       parameters:
         - name: user
@@ -115,29 +89,3 @@ paths:
                       type: integer
                     size:
                       type: integer
-
-  /{user}/api/orbiters/{orbiter_id}:
-    delete:
-      summary: Remove an orbiter from a user's system
-      parameters:
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: orbiter_id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Orbiter removed successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Orbiter removed successfully."
