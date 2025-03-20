@@ -21,10 +21,11 @@ jobs:
       - name: Ensure Test App Exists on Fly.io
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          FLY_ORG_SLUG: ${{ secrets.FLY_ORG_SLUG }}
         run: |
-          if ! flyctl apps list | grep -q "orbit-api-pr-${{ github.event.number }}"; then
+          if ! flyctl apps list --org "$FLY_ORG_SLUG" | grep -q "orbit-api-pr-${{ github.event.number }}"; then
             echo "Creating test app orbit-api-pr-${{ github.event.number }}..."
-            flyctl apps create orbit-api-pr-${{ github.event.number }}
+            flyctl apps create orbit-api-pr-${{ github.event.number }} --org "$FLY_ORG_SLUG"
           else
             echo "Test app already exists."
           fi
