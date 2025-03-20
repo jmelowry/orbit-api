@@ -1,3 +1,13 @@
+openapi: 3.0.0
+
+info:
+  title: Orbit Tracking API
+  description: API for managing orbiters in a personal task solar system
+  version: 1.0.0
+
+servers:
+  - url: https://orbit-api.fly.dev
+
 paths:
   /{user}/api/orbiters:
     post:
@@ -57,7 +67,7 @@ paths:
                     type: string
                     example: "New celestial object detected in Jamie's system."
 
-    get:  # Retrieve all orbiters
+    get:
       summary: Retrieve all orbiters for a user
       parameters:
         - name: user
