@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   title: Orbit Tracking API
-  description: API for managing orbiters in a personal task solar system
+  description: API for managing orbiters in a personal task system
   version: 1.0.0
 
 servers:
