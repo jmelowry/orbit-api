@@ -1,4 +1,4 @@
-name: CI Test Deploy
+name: CI Test Deploy to Fly.io
 
 on:
   pull_request:
@@ -18,13 +18,24 @@ jobs:
           curl -L https://fly.io/install.sh | sh
           echo "$HOME/.fly/bin" >> $GITHUB_PATH
 
-      - name: Create Test App on Fly.io
+      - name: Ensure Test App Exists on Fly.io
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          flyctl apps create orbit-api-pr-${{ github.event.number }} || echo "Test app already exists"
+          if ! flyctl apps list | grep -q "orbit-api-pr-${{ github.event.number }}"; then
+            echo "Creating test app orbit-api-pr-${{ github.event.number }}..."
+            flyctl apps create orbit-api-pr-${{ github.event.number }}
+          else
+            echo "Test app already exists."
+          fi
 
       - name: Deploy Test App to Fly.io
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: flyctl deploy --app orbit-api-pr-${{ github.event.number }} --config fly.toml --remote-only
+
+      - name: Delete Test App from Fly.io
+        if: always()
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: flyctl apps destroy orbit-api-pr-${{ github.event.number }} --yes
