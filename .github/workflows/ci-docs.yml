@@ -1,0 +1,20 @@
+name: CI: Validate API Docs
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install swagger-cli
+        run: npm install -g swagger-cli
+
+      - name: Validate OpenAPI Docs
+        run: swagger-cli validate docs/orbit-api.yaml
