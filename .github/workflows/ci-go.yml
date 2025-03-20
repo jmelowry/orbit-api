@@ -1,4 +1,4 @@
-name: CI: Go Tests
+name: CI Go Tests
 
 on:
   pull_request:
